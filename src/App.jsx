@@ -12,17 +12,33 @@ import { TimeProvider } from "./context/TimeContext";
 import { useCameraDrift } from "./hooks/useCameraDrift";
 import "./App.css";
 
-function CameraWrapper({ children }) {
-  useCameraDrift(6);
+/* ===============================
+   SAFE CAMERA WRAPPER
+================================ */
+function CameraWrapper({ children, enable }) {
+  // ❗ Only activate drift AFTER mount
+  if (enable) {
+    useCameraDrift(6);
+  }
+
   return <div className="camera">{children}</div>;
 }
 
 function App() {
   const [ready, setReady] = useState(false);
+  const [enableDrift, setEnableDrift] = useState(false);
 
-  // Delay heavy GPU layers until after first paint
+  // Phase 1: allow React to mount & paint
   useEffect(() => {
-    const id = requestAnimationFrame(() => setReady(true));
+    const id = requestAnimationFrame(() => {
+      setReady(true);
+
+      // Phase 2: enable camera drift AFTER paint
+      requestAnimationFrame(() => {
+        setEnableDrift(true);
+      });
+    });
+
     return () => cancelAnimationFrame(id);
   }, []);
 
@@ -30,7 +46,8 @@ function App() {
     <BrowserRouter>
       <EffectProvider>
         <TimeProvider>
-          <CameraWrapper>
+          <CameraWrapper enable={enableDrift}>
+            {/* Heavy GPU layers AFTER first paint */}
             {ready && (
               <>
                 <MultiStarfield />
@@ -39,6 +56,7 @@ function App() {
               </>
             )}
 
+            {/* UI (safe) */}
             <CustomCursor />
             <DebugHUD />
             <Navbar />
