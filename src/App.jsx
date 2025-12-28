@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { BrowserRouter } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import AppRoutes from "./routes/AppRoutes";
@@ -17,14 +18,27 @@ function CameraWrapper({ children }) {
 }
 
 function App() {
+  const [ready, setReady] = useState(false);
+
+  // Delay heavy GPU layers until after first paint
+  useEffect(() => {
+    const id = requestAnimationFrame(() => setReady(true));
+    return () => cancelAnimationFrame(id);
+  }, []);
+
   return (
     <BrowserRouter>
       <EffectProvider>
         <TimeProvider>
           <CameraWrapper>
-            <MultiStarfield />
-            <BackgroundObjects />
-            <WireframeRings />
+            {ready && (
+              <>
+                <MultiStarfield />
+                <BackgroundObjects />
+                <WireframeRings />
+              </>
+            )}
+
             <CustomCursor />
             <DebugHUD />
             <Navbar />

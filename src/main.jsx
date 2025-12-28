@@ -1,14 +1,10 @@
+import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
+import "./index.css";
+import App from "./App.jsx";
 
-const root = document.getElementById("root");
-
-root.innerHTML = `
-  <div style="
-    color: white;
-    padding: 40px;
-    font-size: 20px;
-    background: #020617;
-  ">
-    ✅ React entry reached on this device
-  </div>
-`;
+createRoot(document.getElementById("root")).render(
+  <StrictMode>
+    <App />
+  </StrictMode>
+);
