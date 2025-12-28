@@ -1,24 +1,14 @@
-import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import "./index.css";
-import App from "./App.jsx";
 
-/*
-  Android Chrome FINAL FIX:
-  Do not activate GPU layers until user interacts
-*/
+const root = document.getElementById("root");
 
-const unlock = () => {
-  document.documentElement.classList.add("user-unlocked");
-  window.removeEventListener("touchstart", unlock);
-  window.removeEventListener("scroll", unlock);
-};
-
-window.addEventListener("touchstart", unlock, { passive: true });
-window.addEventListener("scroll", unlock, { passive: true });
-
-createRoot(document.getElementById("root")).render(
-  <StrictMode>
-    <App />
-  </StrictMode>
-);
+root.innerHTML = `
+  <div style="
+    color: white;
+    padding: 40px;
+    font-size: 20px;
+    background: #020617;
+  ">
+    ✅ React entry reached on this device
+  </div>
+`;
