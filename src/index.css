@@ -207,3 +207,25 @@ html.app-ready .bg-objects,
 html.app-ready .wireframe-layer {
   opacity: 1;
 }
+/* ===============================
+   ANDROID CHROME FINAL FALLBACK
+   Prevent pre-paint GPU crash
+================================ */
+
+/* Block GPU-heavy fixed layers until user interaction */
+html:not(.user-unlocked) .camera,
+html:not(.user-unlocked) .particle-canvas,
+html:not(.user-unlocked) .star-layer,
+html:not(.user-unlocked) .bg-objects,
+html:not(.user-unlocked) .wireframe-layer {
+  display: none;
+}
+
+/* Enable after interaction */
+html.user-unlocked .camera,
+html.user-unlocked .particle-canvas,
+html.user-unlocked .star-layer,
+html.user-unlocked .bg-objects,
+html.user-unlocked .wireframe-layer {
+  display: block;
+}

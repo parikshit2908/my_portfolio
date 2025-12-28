@@ -4,12 +4,18 @@ import "./index.css";
 import App from "./App.jsx";
 
 /*
-  Android Chrome render safety:
-  Delay heavy GPU layers until first paint
+  Android Chrome FINAL FIX:
+  Do not activate GPU layers until user interacts
 */
-requestAnimationFrame(() => {
-  document.documentElement.classList.add("app-ready");
-});
+
+const unlock = () => {
+  document.documentElement.classList.add("user-unlocked");
+  window.removeEventListener("touchstart", unlock);
+  window.removeEventListener("scroll", unlock);
+};
+
+window.addEventListener("touchstart", unlock, { passive: true });
+window.addEventListener("scroll", unlock, { passive: true });
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
