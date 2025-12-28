@@ -28,10 +28,10 @@ body {
 ================================ */
 #root {
   width: 100%;
-  min-height: 100svh; /* mobile-safe */
+  min-height: 100svh;
 }
 
-/* Fallback for older browsers */
+/* Fallback */
 @supports not (height: 100svh) {
   #root {
     min-height: 100vh;
@@ -48,7 +48,6 @@ body {
   transform-style: preserve-3d;
   perspective: 1800px;
   perspective-origin: center center;
-  will-change: transform;
   backface-visibility: hidden;
 }
 
@@ -84,7 +83,6 @@ body {
   inset: 0;
   pointer-events: none;
   z-index: -3;
-  will-change: transform;
 }
 
 /* ===============================
@@ -114,7 +112,7 @@ body {
   z-index: 9998;
 }
 
-/* Disable cursor ONLY on touch */
+/* Disable cursor on touch */
 @media (pointer: coarse) {
   body {
     cursor: auto;
@@ -175,7 +173,7 @@ button:focus-visible {
 }
 
 /* ===============================
-   MOBILE SAFETY (NO VISUAL LOSS)
+   MOBILE SAFETY
 ================================ */
 @media (max-width: 768px) {
   .wireframe-layer {
@@ -186,20 +184,26 @@ button:focus-visible {
     opacity: 0.35;
   }
 }
+
 /* ===============================
-   iOS SAFARI GPU SAFETY FIX
-   Prevent render tree crash
+   ANDROID CHROME BLACK SCREEN FIX
 ================================ */
 
-@supports (-webkit-touch-callout: none) {
-  html,
-  body {
-    transform: none !important;
-    perspective: none !important;
-  }
+/* Hide heavy fixed layers until first paint */
+html:not(.app-ready) .camera,
+html:not(.app-ready) .particle-canvas,
+html:not(.app-ready) .star-layer,
+html:not(.app-ready) .bg-objects,
+html:not(.app-ready) .wireframe-layer {
+  opacity: 0;
+  pointer-events: none;
+}
 
-  .camera {
-    transform: none !important;
-    perspective: none !important;
-  }
+/* Activate after paint */
+html.app-ready .camera,
+html.app-ready .particle-canvas,
+html.app-ready .star-layer,
+html.app-ready .bg-objects,
+html.app-ready .wireframe-layer {
+  opacity: 1;
 }
