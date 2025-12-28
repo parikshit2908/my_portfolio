@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { BrowserRouter } from "react-router-dom";
+import { HashRouter } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import AppRoutes from "./routes/AppRoutes";
 import CustomCursor from "./components/CustomCursor";
@@ -15,39 +15,25 @@ import "./App.css";
 /* ===============================
    SAFE CAMERA WRAPPER
 ================================ */
-function CameraWrapper({ children, enable }) {
-  // ❗ Only activate drift AFTER mount
-  if (enable) {
-    useCameraDrift(6);
-  }
-
+function CameraWrapper({ children }) {
+  useCameraDrift(6);
   return <div className="camera">{children}</div>;
 }
 
 function App() {
   const [ready, setReady] = useState(false);
-  const [enableDrift, setEnableDrift] = useState(false);
 
-  // Phase 1: allow React to mount & paint
+  // Let browser paint once before heavy layers
   useEffect(() => {
-    const id = requestAnimationFrame(() => {
-      setReady(true);
-
-      // Phase 2: enable camera drift AFTER paint
-      requestAnimationFrame(() => {
-        setEnableDrift(true);
-      });
-    });
-
+    const id = requestAnimationFrame(() => setReady(true));
     return () => cancelAnimationFrame(id);
   }, []);
 
   return (
-    <BrowserRouter>
+    <HashRouter>
       <EffectProvider>
         <TimeProvider>
-          <CameraWrapper enable={enableDrift}>
-            {/* Heavy GPU layers AFTER first paint */}
+          <CameraWrapper>
             {ready && (
               <>
                 <MultiStarfield />
@@ -56,7 +42,6 @@ function App() {
               </>
             )}
 
-            {/* UI (safe) */}
             <CustomCursor />
             <DebugHUD />
             <Navbar />
@@ -64,7 +49,7 @@ function App() {
           </CameraWrapper>
         </TimeProvider>
       </EffectProvider>
-    </BrowserRouter>
+    </HashRouter>
   );
 }
 
