@@ -186,3 +186,20 @@ button:focus-visible {
     opacity: 0.35;
   }
 }
+/* ===============================
+   iOS SAFARI GPU SAFETY FIX
+   Prevent render tree crash
+================================ */
+
+@supports (-webkit-touch-callout: none) {
+  html,
+  body {
+    transform: none !important;
+    perspective: none !important;
+  }
+
+  .camera {
+    transform: none !important;
+    perspective: none !important;
+  }
+}
