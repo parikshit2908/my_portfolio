@@ -1,0 +1,11 @@
+/* App-level reset */
+.app {
+  width: 100%;
+  min-height: 100vh;
+}
+
+/* Remove accidental centering */
+body {
+  overflow-x: hidden;
+}
+@import "./styles/buttons.css";

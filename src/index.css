@@ -1,0 +1,264 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  background: #020617;
+  color: #e5e7eb;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  overflow-x: hidden;
+}
+
+/* ROOT */
+#root {
+  width: 100%;
+  min-height: 100vh;
+  perspective: 1200px;
+}
+
+/* GLOBAL LAYOUT */
+.section {
+  width: 100%;
+  padding: 120px 0;
+  position: relative;
+}
+
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 6%;
+}
+
+/* Enable 3D page transitions */
+.page-wrapper {
+  perspective: 1400px;
+  transform-style: preserve-3d;
+}
+
+/* PARTICLE UNIVERSE */
+.particle-canvas {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* CUSTOM CURSOR */
+body {
+  cursor: none;
+}
+
+/* Small dot */
+.cursor-dot {
+  position: fixed;
+  width: 12px;
+  height: 12px;
+  background: #38bdf8;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+/* Outer ring */
+.cursor-ring {
+  position: fixed;
+  width: 44px;
+  height: 44px;
+  border: 2px solid rgba(56, 189, 248, 0.5);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9998;
+  transition: transform 0.2s ease;
+}
+
+/* Hover effect */
+.cursor-hover {
+  transform: scale(1.6);
+  border-color: rgba(56, 189, 248, 0.9);
+}
+
+/* Disable cursor on mobile */
+@media (max-width: 768px) {
+  body {
+    cursor: auto;
+  }
+
+  .cursor-dot,
+  .cursor-ring {
+    display: none;
+  }
+}
+
+/* CAMERA SPACE */
+body {
+  perspective: 1600px;
+  transform-style: preserve-3d;
+}
+
+.star-layer {
+  position: fixed;
+  inset: 0;
+  z-index: -3;
+  pointer-events: none;
+}
+
+/* ===============================
+   REAL 3D CAMERA SETUP
+================================ */
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+}
+
+#root {
+  width: 100%;
+  min-height: 100vh;
+  perspective: 1800px;
+  perspective-origin: center center;
+}
+
+.camera {
+  width: 100%;
+  min-height: 100vh;
+  transform-style: preserve-3d;
+  position: relative;
+}
+
+.camera {
+  overflow-x: hidden;
+}
+
+.star-layer {
+  will-change: transform;
+}
+
+/* Subtle hover tilt (no zoom) */
+.tilt {
+  transform-style: preserve-3d;
+  transition: transform 0.25s ease;
+}
+
+.tilt:hover {
+  transform: rotateX(2deg) rotateY(-2deg) translateZ(8px);
+}
+
+/* Camera drift safety */
+.camera {
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+/* ===============================
+   FLOATING 3D BACKGROUND OBJECTS
+================================ */
+
+.bg-objects {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -2;
+  transform-style: preserve-3d;
+}
+
+.bg-orb {
+  position: absolute;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 30% 30%,
+      rgba(56,189,248,0.45),
+      rgba(56,189,248,0.12),
+      transparent 70%);
+  filter: blur(2px);
+  will-change: transform;
+}
+
+/* ===============================
+   DEBUG HUD (GOD MODE ONLY)
+================================ */
+
+.debug-hud {
+  position: fixed;
+  bottom: 16px;
+  left: 16px;
+  z-index: 9999;
+  padding: 12px 14px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 12px;
+  line-height: 1.4;
+  color: #38bdf8;
+  background: rgba(6, 10, 20, 0.85);
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  border-radius: 10px;
+  pointer-events: none;
+  backdrop-filter: blur(6px);
+}
+
+/* ===============================
+   WIREFRAME RINGS (SCI-FI LAYER)
+================================ */
+
+.wireframe-layer {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  transform-style: preserve-3d;
+}
+
+.wire-ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px dashed rgba(56, 189, 248, 0.45);
+  box-shadow: 0 0 40px rgba(56, 189, 248, 0.25);
+  filter: blur(0.2px);
+  will-change: transform;
+}
+
+/* ===============================
+   ACCESSIBILITY POLISH
+================================ */
+
+a:focus-visible,
+button:focus-visible {
+  outline: 3px solid rgba(56, 189, 248, 0.8);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* ===============================
+   MOBILE PERFORMANCE TUNING
+================================ */
+
+@media (max-width: 768px) {
+  .wireframe-layer {
+    display: none;
+  }
+
+  .bg-objects {
+    opacity: 0.35;
+  }
+
+  .hero-card {
+    padding: 40px 28px;
+    transform: translateZ(60px);
+  }
+
+  .hero-card h1 {
+    font-size: 2rem;
+  }
+}
